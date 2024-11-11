@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 
 const DUMMY_MEETUPS = [
@@ -45,26 +44,34 @@ const DUMMY_MEETUPS = [
 ];
 
 const HomePage = (props) => {
-	// const [meetups, setMeetups] = useState([]);
-	// useEffect(() => {
-	// 	setTimeout(() => {
-	// 		setMeetups(DUMMY_MEETUPS);
-	// 	});
-	// }, []);
-
 	return <MeetupList meetups={props.meetups} />;
 };
 
 // The getStaticProps() function is called at build time to SSG (Static Site Generation) the page.
-export async function getStaticProps() {
+// export async function getStaticProps() {
+// 	// fetch data from an API
+// 	return {
+// 		props: {
+// 			meetups: DUMMY_MEETUPS,
+// 		},
+
+// 		// for Incremental Static Regeneration (ISR) add the revalidate option.
+// 		revalidate: 9600, // revalidate every 9600 seconds when the new data is added after build
+// 	};
+// }
+
+// The getServerSideProps() function is called at request time to SSR (Server Side Rendering) the page.
+export async function getServerSideProps(context) {
+	const req = context.req;
+	const res = context.res;
+
 	// fetch data from an API
 	return {
 		props: {
 			meetups: DUMMY_MEETUPS,
 		},
 
-		// for Incremental Static Regeneration (ISR) add the revalidate option.
-		revalidate: 9600, // revalidate every 9600 seconds when the new data is added after build
+		// no revalidation for SSR pages
 	};
 }
 
