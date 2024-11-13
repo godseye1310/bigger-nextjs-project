@@ -12,26 +12,31 @@ const MeetingDetails = ({ meetupData }) => {
 				<title>{meetupData.title}</title>
 				<meta name="description" content={meetupData.description} />
 			</Head>
-			<MeetupDetail {...meetupData} />;
+			<MeetupDetail {...meetupData} />
 		</>
 	);
 };
 
 export async function getStaticPaths() {
 	// in real world we would fetch path data from an API
+	// const response = await fetch("http://localhost:3000/api/fetch-meetups", {
+	// 	method: "GET",
+	// });
+	// const data = await response.json();
 
-	const apiUrl =
-		"https://next-meetups-bigger-nextjs-project.vercel.app/api/fetch-meetups";
+	const client = await MongoClient.connect(
+		"mongodb+srv://avinash:pVGSNUkIcyY6tKOU@cluster0.xdel4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+	);
+	const db = client.db();
 
-	const localUrl = "http://localhost:3000/api/fetch-meetups";
+	const meetupsCollection = db.collection("meetups");
 
-	const response = await fetch(apiUrl, {
-		method: "GET",
-	});
-	const data = await response.json();
+	const meetups = await meetupsCollection.find().toArray();
+
+	client.close();
 
 	// Get the paths we want to pre-render based on posts
-	const paths = data.meetups.map((meetup) => ({
+	const paths = meetups.map((meetup) => ({
 		params: { meetupId: meetup._id.toString() },
 	}));
 

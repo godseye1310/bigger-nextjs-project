@@ -1,5 +1,6 @@
 import Head from "next/head";
 import MeetupList from "../components/meetups/MeetupList";
+import { MongoClient } from "mongodb";
 
 const HomePage = (props) => {
 	// console.log(props.meetups);
@@ -21,17 +22,32 @@ const HomePage = (props) => {
 export async function getStaticProps() {
 	// fetch data from an API
 	// http://localhost:3000/api/fetch-meetups // monogoDB needs a valid url not a relative path
-	const response = await fetch("http://localhost:3000/api/fetch-meetups", {
-		method: "GET",
-	});
-	const data = await response.json();
+	// const response = await fetch("http://localhost:3000/api/fetch-meetups", {
+	// 	method: "GET",
+	// });
+	// const data = await response.json();
 	// console.log("meetups-data :", data.meetups);
 
 	//(we can write the mongoDB connection code here itself to get the data from DB)
 
+	const client = await MongoClient.connect(
+		"mongodb+srv://avinash:pVGSNUkIcyY6tKOU@cluster0.xdel4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+	);
+
+	const db = client.db();
+	const meetupsCollection = db.collection("meetups");
+
+	const meetups = await meetupsCollection.find().toArray();
+	client.close();
+
 	return {
 		props: {
-			meetups: data.meetups,
+			meetups: meetups.map((meetup) => ({
+				title: meetup.title,
+				address: meetup.address,
+				image: meetup.image,
+				id: meetup._id.toString(),
+			})),
 		},
 
 		// for Incremental Static Regeneration (ISR) add the revalidate option.
