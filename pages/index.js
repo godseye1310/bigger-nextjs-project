@@ -21,7 +21,7 @@ const HomePage = (props) => {
 export async function getStaticProps() {
 	// fetch data from an API
 	// http://localhost:3000/api/fetch-meetups // monogoDB needs a valid url not a relative path
-	const response = await fetch("http://localhost:3000/api/fetch-meetups", {
+	const response = await fetch("/api/fetch-meetups", {
 		method: "GET",
 	});
 	const data = await response.json();
