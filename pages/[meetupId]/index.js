@@ -20,9 +20,10 @@ const MeetingDetails = ({ meetupData }) => {
 export async function getStaticPaths() {
 	// in real world we would fetch path data from an API
 
-	const apiUrl = process.env.NEXT_PUBLIC_API_URL
-		? `${process.env.NEXT_PUBLIC_API_URL}api/fetch-meetups`
-		: "http://localhost:3000/api/fetch-meetups";
+	const apiUrl =
+		"https://next-meetups-bigger-nextjs-project.vercel.app/api/fetch-meetups";
+
+	const localUrl = "http://localhost:3000/api/fetch-meetups";
 
 	const response = await fetch(apiUrl, {
 		method: "GET",
