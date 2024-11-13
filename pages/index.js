@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 
 const DUMMY_MEETUPS = [
@@ -44,19 +45,29 @@ const DUMMY_MEETUPS = [
 ];
 
 const HomePage = (props) => {
+	// console.log(props.meetups);
 	return <MeetupList meetups={props.meetups} />;
 };
 
 // The getStaticProps() function is called at build time to SSG (Static Site Generation) the page.
 export async function getStaticProps() {
 	// fetch data from an API
+	// http://localhost:3000/api/fetch-meetups // monogoDB needs a valid url not a relative path
+	const response = await fetch("http://localhost:3000/api/fetch-meetups", {
+		method: "GET",
+	});
+	const data = await response.json();
+	// console.log("meetups-data :", data.meetups);
+
+	//(we can write the mongoDB connection code here itself to get the data from DB)
+
 	return {
 		props: {
-			meetups: DUMMY_MEETUPS,
+			meetups: data.meetups,
 		},
 
 		// for Incremental Static Regeneration (ISR) add the revalidate option.
-		revalidate: 9600, // revalidate every 9600 seconds when the new data is added after build
+		revalidate: 3, // revalidate every 9600 seconds when the new data is added after build
 	};
 }
 
