@@ -20,7 +20,11 @@ const MeetingDetails = ({ meetupData }) => {
 export async function getStaticPaths() {
 	// in real world we would fetch path data from an API
 
-	const response = await fetch("http://localhost:3000/api/fetch-meetups", {
+	const apiUrl = process.env.NEXT_PUBLIC_API_URL
+		? `${process.env.NEXT_PUBLIC_API_URL}api/fetch-meetups`
+		: "http://localhost:3000/api/fetch-meetups";
+
+	const response = await fetch(apiUrl, {
 		method: "GET",
 	});
 	const data = await response.json();
