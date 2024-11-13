@@ -12,7 +12,7 @@ const fetchHandler = async (req, res) => {
 		const meetupsCollection = db.collection("meetups");
 
 		const meetups = await meetupsCollection.find().toArray();
-		console.log("result: ", meetups);
+		// console.log("result: ", meetups);
 
 		client.close();
 

@@ -17,7 +17,7 @@ const NewMeetupPage = () => {
 
 		const data = await response.json();
 		console.log(data);
-		router.push("/");
+		router.push(`/${data.meetupId}`);
 		return response.ok;
 	};
 	return <NewMeetupForm onAddMeetup={addMeetupHandler} />;
