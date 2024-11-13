@@ -5,7 +5,7 @@ import { MongoClient } from "mongodb";
 async function handler(req, res) {
 	if (req.method === "POST") {
 		const data = req.body;
-		console.log(data);
+		// console.log(data);
 		// const { title, image, address, description } = data;
 
 		// store them to DB
@@ -20,7 +20,10 @@ async function handler(req, res) {
 		client.close();
 
 		// send response
-		res.status(201).json({ message: "Meetup Created!" });
+		res.status(201).json({
+			message: "Meetup Created!",
+			meetupId: result.insertedId,
+		});
 	}
 }
 
