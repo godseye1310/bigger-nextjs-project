@@ -1,11 +1,20 @@
 import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
+import Head from "next/head";
 
 const MeetingDetails = ({ meetupData }) => {
 	// console.log(meetupData);
 	// const {image, title, address, description} = meetupData
 
-	return <MeetupDetail {...meetupData} />;
+	return (
+		<>
+			<Head>
+				<title>{meetupData.title}</title>
+				<meta name="description" content={meetupData.description} />
+			</Head>
+			<MeetupDetail {...meetupData} />;
+		</>
+	);
 };
 
 export async function getStaticPaths() {
